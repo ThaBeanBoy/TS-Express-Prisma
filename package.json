@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "script": "ts-node ./src/script.ts",
+    "format-schema": "prisma format",
     "db-migrate": "prisma migrate dev --name init",
     "db-browser": "npx prisma studio"
   },

@@ -1,0 +1,45 @@
+<div class='auth-container'>
+  <img src='auth-hero.jpg' id='auth-hero' alt='hero' />
+  {{! Original artist: https://za.pinterest.com/pin/11047961579867243/ }}
+
+  <div class='form-container'>
+
+    <form onsubmit=''>
+      <h1 class='auth-header col-span-2'>Sign up</h1>
+
+      <div class='input-container'>
+        <label for='name'>Name</label>
+        <input id='name' type='text' name='name' />
+      </div>
+
+      <div class='input-container'>
+        <label for='username'>Username</label>
+        <input id='username' type='text' name='username' required />
+      </div>
+
+      <div class='input-container col-span-2'>
+        <label for='email'>Email</label>
+        <input id='email' type='email' name='email' required />
+      </div>
+
+      <div class='input-container col-span-2'>
+        <label for='password'>Password</label>
+        <input id='password' type='password' name='password' required />
+      </div>
+
+      <div class='input-container col-span-2'>
+        <label for='confirmPassword'>Confirm Password</label>
+        <input
+          id='confirmPassword'
+          type='password'
+          name='confirmPassword'
+          required
+        />
+      </div>
+
+      <button type='submit' class='col-span-2'>Sign Up</button>
+    </form>
+
+    <footer><a href=''>Link somewhere</a></footer>
+  </div>
+</div>

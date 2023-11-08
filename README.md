@@ -7,3 +7,9 @@
 ## Express, Typescript Setup
 
 Traversy media
+
+## Authentication
+
+### Prisma
+
+### Encryption

@@ -1,5 +1,7 @@
 import { Router, Request, Response } from 'express';
+import httpStatus from 'http-status';
 import db from '../model/db';
+
 const authRoutes = Router();
 
 authRoutes.get('/', (req: Request, res: Response) => {
@@ -8,12 +10,10 @@ authRoutes.get('/', (req: Request, res: Response) => {
 
 authRoutes.post('/register', async (req, res) => {
   try {
-    db.users.create(req.body);
-    console.log(req.body);
-
-    res.send(req.body);
-  } catch (error) {
-    res.redirect('/register');
+    await db.users.create(req.body);
+    res.status(httpStatus.CREATED).send();
+  } catch (error: any) {
+    res.status(httpStatus.BAD_REQUEST).send(error.message);
   }
 });
 

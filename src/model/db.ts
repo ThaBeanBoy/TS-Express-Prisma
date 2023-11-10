@@ -1,11 +1,64 @@
 import { Prisma, PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
+import isEmail from 'validator/lib/isEmail';
+import isEmpty from 'validator/lib/isEmpty';
 
 const prisma = new PrismaClient();
 
 const db = {
   users: {
     async create(data: Prisma.UserCreateInput) {
+      // Checking empty values
+      if (
+        [data.email, data.password, data.username].some(
+          (value) => value === undefined || isEmpty(value)
+        )
+      ) {
+        throw new Error(
+          'email, password and/or username cannot be empty/undefined'
+        );
+      }
+
+      // checking email
+      if (!isEmail(data.email)) {
+        throw new InvalidEmailError();
+      }
+
+      // checking password
+      if (data.password.length < 12) {
+        throw new Error('Password has to have atleast 12 characters');
+      }
+
+      if (!/[a-z]/.test(data.password) || !/[A-Z]/.test(data.password)) {
+        throw new Error(
+          'Password has to include atleast 1 smaller case character & 1 upper case character'
+        );
+      }
+
+      if (!/[0-9]/.test(data.password)) {
+        throw new Error('Password has to include atleast 1 number');
+      }
+
+      if (!/[!@#$%^&*(),.?":{}|<>]/.test(data.password)) {
+        throw new Error('Password needs atleast 1 special character');
+      }
+
+      // checking if email/username already exists
+      let user = await prisma.user.findFirst({
+        where: { email: data.email },
+      });
+      console.log(user);
+      if (user !== null) {
+        throw new Error('Email already exists');
+      }
+
+      user = await prisma.user.findFirst({
+        where: { username: data.username },
+      });
+      if (user !== null) {
+        throw new Error('Username already exists');
+      }
+
       // encrypting password
       data.password = await db.encryption.encrypt(data.password);
 
@@ -52,3 +105,12 @@ const db = {
 };
 
 export default db;
+
+// errors
+class InvalidEmailError extends Error {
+  static Message = 'Email is invalid';
+
+  constructor() {
+    super(InvalidEmailError.Message);
+  }
+}

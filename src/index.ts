@@ -1,5 +1,7 @@
 import express, { Request, Response } from 'express';
+import helmet from 'helmet';
 import * as handlebars from 'express-handlebars';
+
 import path from 'path';
 
 import authRoutes from './routes/auth';
@@ -10,6 +12,8 @@ enum appConfig {
 
 const app = express();
 const port = process.env.PORT || appConfig.defaultPort;
+
+app.use(helmet());
 
 app.engine(
   'handlebars',
